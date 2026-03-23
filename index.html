@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>舞雲智網 - 智能報價單系統 v8.2</title>
+<title>舞雲智網 - 智能報價單系統 v8.3</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -153,7 +153,7 @@ const QuotationSystem = () => {
             <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center">
               <i className="fas fa-calculator"></i>
             </div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.2</span></h1>
+            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.3</span></h1>
           </div>
           <div className="flex gap-3">
             <button 
@@ -283,7 +283,6 @@ const QuotationSystem = () => {
               條款與備註
             </h2>
             <div className="space-y-3">
-                {/* 編輯區：付款條件確保是 textarea */}
                 <div>
                     <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">付款條件</label>
                     <textarea rows="3" value={data.paymentTerms} onChange={(e) => handleChange('paymentTerms', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
@@ -361,7 +360,7 @@ const QuotationSystem = () => {
                 </div>
             </div>
 
-            {/* Items Table */}
+            {/* Items Table - 移除了固定行數的程式碼 */}
             <div className="items-section flex-grow">
                 <table className="items-table w-full text-left border-collapse">
                     <thead>
@@ -385,17 +384,6 @@ const QuotationSystem = () => {
                                 <td className="py-2 px-2 text-right">{formatNumber(item.unitPrice)}</td>
                                 <td className="py-2 px-2 text-right font-medium">{formatNumber(item.quantity * item.unitPrice)}</td>
                                 <td className="py-2 px-2 text-gray-500 text-xs">{item.remark}</td>
-                            </tr>
-                        ))}
-                        {Array.from({ length: Math.max(0, 10 - data.items.length) }).map((_, i) => (
-                            <tr key={`empty-${i}`}>
-                                <td className="py-3 px-2">&nbsp;</td>
-                                <td className="py-3 px-2"></td>
-                                <td className="py-3 px-2"></td>
-                                <td className="py-3 px-2"></td>
-                                <td className="py-3 px-2"></td>
-                                <td className="py-3 px-2"></td>
-                                <td className="py-3 px-2"></td>
                             </tr>
                         ))}
                     </tbody>
@@ -424,7 +412,6 @@ const QuotationSystem = () => {
                 {/* 備註與條款 */}
                 <div className="terms-box border border-gray-300 p-3 rounded-sm text-xs bg-gray-50">
                     <div className="grid grid-cols-1 gap-2">
-                        {/* 優化：改用 div 與 flex-1 確保換行生效 */}
                         <div className="flex">
                             <div className="font-bold text-gray-700 w-20 flex-shrink-0">付款條件：</div>
                             <div className="text-gray-600 whitespace-pre-wrap flex-1">{data.paymentTerms}</div>
