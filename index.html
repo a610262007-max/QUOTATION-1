@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>舞雲智網 - 智能報價單系統 v8.10</title>
+<title>舞雲智網 - 智能報價單系統 v8.11</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -65,41 +65,20 @@ const SALES_REPS = [
 
 const QuotationSystem = () => {
   
+  // 取得初始資料 (已改回乾淨的 ABC 範例)
   const getInitialData = () => {
     const today = new Date().toISOString().split('T')[0];
     const validDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     
-    const defaultPayment = `驗收後月結 30 天
-1) 簽約後付款總價 30%
-2) 清冊/報告書完成後 30%
-3) (內稽)結案 30%`;
+    const defaultPayment = '驗收後月結 30 天';
 
-    const defaultRemarks = `匯款資訊：兆豐國際商業銀行(017)新竹分行 | 帳號：203-09-06002-1 | 戶名：舞雲智網股份有限公司
-工作項目：
-1. 協助以下三處溫室氣體盤查清冊產出
--日本子公司GENII IDEAS JAPAN株式会社
--新加坡子公司GENII IDEAS(S) PTE. LTD.
--德國子公司GENII IDEAS GmbH
-2. 彙整以下九處溫室氣體盤查資料為一本清冊、一本報告書檔案：
--新竹總部
--研發實驗暨量產基地/資材倉儲(新竹茄苳)
--台中辦公室
--台南辦公室
--高雄辦公室
--嘉義辦公室
--日本子公司GENII IDEAS JAPAN株式会社
--新加坡子公司GENII IDEAS(S) PTE. LTD.
--德國子公司GENII IDEAS GmbH
-
-其它：
-1. 本報價不包含給予第三方稽核單位之費用、本公司陪同稽核費用
-2. 若需陪同外部稽核，須另行報價
-3. 海外據點以線上方式進行輔導，並僅限於中英文輔導`;
+    const defaultRemarks = `匯款資訊： 兆豐國際商業銀行(017) 新竹分行 | 帳號：203-09-06002-1 | 戶名：舞雲智網股份有限公司
+有效期限： 本報價單有效期限為 ${validDate}，逾期請重新詢價。`;
 
     return {
-      customerName: '聚賢研發股份有限公司',
-      customerTaxId: '59075364',
-      projectName: 'ISO 14064溫室氣體盤查',
+      customerName: 'ABC股份有限公司',
+      customerTaxId: '12345678',
+      projectName: '碳定價管理流程輔導',
       salesRep: SALES_REPS[0],
       quotationDate: today,
       validUntil: validDate,
@@ -108,11 +87,11 @@ const QuotationSystem = () => {
       items: [
         {
           id: '1',
-          description: 'ISO 14064溫室氣體盤查輔導',
-          unit: '式',
-          quantity: 1,
-          unitPrice: 330000,
-          remark: '2025年度'
+          description: '碳定價管理流程輔導\n(說明)',
+          unit: '人時',
+          quantity: 100,
+          unitPrice: 10000,
+          remark: '顧問服務'
         }
       ]
     };
@@ -174,7 +153,7 @@ const QuotationSystem = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center"><i className="fas fa-calculator"></i></div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.10</span></h1>
+            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.11</span></h1>
           </div>
           <div className="flex gap-3">
             <button onClick={handleReset} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-bold shadow transition flex items-center gap-2">
