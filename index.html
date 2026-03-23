@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>舞雲智網 - 智能報價單系統 v8.4</title>
+<title>舞雲智網 - 智能報價單系統 v8.5</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -58,9 +58,6 @@ const SALES_REPS = [
     '陳念慈 Nico',
     '李靜 Lidia'
 ];
-
-// 用戶提供的 Logo URL
-const LOGO_URL = "https://img02.huaauto.com/2026/03/17/ca9a7b97e9306e6.png";
 
 const QuotationSystem = () => {
   
@@ -156,7 +153,7 @@ const QuotationSystem = () => {
             <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center">
               <i className="fas fa-calculator"></i>
             </div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.4</span></h1>
+            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.5</span></h1>
           </div>
           <div className="flex gap-3">
             <button 
@@ -301,432 +298,23 @@ const QuotationSystem = () => {
         {/* --- 右側：預覽區 (列印時全螢幕) --- */}
         <div className={`lg:col-span-8 print-area ${!showPreview ? 'hidden lg:block' : 'block'}`}>
           <div className="a4-paper">
-            {/* Header - 已重新佈局以放置 Logo 並置中標題 */}
+            
+            {/* Header - v8.5 完美置中與 Logo 設定 */}
             <div className="header-section mb-6 border-b-2 border-gray-800 pb-4">
                 <div className="flex justify-between items-center gap-4">
-                    {/* 左側：新增 Logo */}
-                    <img src={LOGO_URL} alt="Company Logo" className="h-16 w-auto flex-shrink-0" />
+                    {/* 左側：新增 Logo (指定讀取同資料夾下的 LOGO.gif) */}
+                    <div className="w-64 flex-shrink-0">
+                        <img src="./LOGO.gif" alt="Company Logo" className="h-16 w-auto" />
+                    </div>
 
-                    {/* 中間：調整標題為置中，並讓它填滿中間空間 */}
+                    {/* 中間：調整標題為置中 */}
                     <div className="text-center flex-grow">
                         <h1 className="text-3xl font-black text-gray-900 tracking-wide">報 價 單</h1>
                         <p className="text-sm text-gray-500 mt-1 font-medium tracking-widest">QUOTATION</p>
                     </div>
 
                     {/* 右側：公司右上角資訊 */}
-                    <div className="text-right flex-shrink-0">
-                        <div className="text-xl font-bold text-gray-800">舞雲智網股份有限公司</div>
-                        <div className="text-xs text-gray-500 mt-1">統一編號：53789408</div>
-                        <div className="text-xs text-gray-500">新竹縣竹北市復興三路二段76號</div>
-                        <div className="text-xs text-gray-500">Tel: (03)658-9760</div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Info Section */}
-            <div className="info-section mb-6 grid grid-cols-2 gap-8">
-                <div className="info-box border border-gray-300 p-3 rounded-sm">
-                    <h3 className="text-xs font-bold text-gray-400 border-b border-gray-200 pb-1 mb-2 uppercase">Client Info (客戶資料)</h3>
-                    <table className="w-full text-sm">
-                        <tbody>
-                            <tr>
-                                <td className="py-1 text-gray-500 w-20">客戶名稱：</td>
-                                <td className="py-1 font-bold text-gray-800">{data.customerName}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 text-gray-500">統一編號：</td>
-                                <td className="py-1 text-gray-800">{data.customerTaxId}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 text-gray-500">專案名稱：</td>
-                                <td className="py-1 text-gray-800">{data.projectName}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className="info-box border border-gray-300 p-3 rounded-sm">
-                    <h3 className="text-xs font-bold text-gray-400 border-b border-gray-200 pb-1 mb-2 uppercase">Quote Info (報價資料)</h3>
-                    <table className="w-full text-sm">
-                        <tbody>
-                            <tr>
-                                <td className="py-1 text-gray-500 w-20">報價單號：</td>
-                                <td className="py-1 text-gray-800">Q-{data.quotationDate.replace(/-/g, '')}-01</td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 text-gray-500">報價日期：</td>
-                                <td className="py-1 text-gray-800">{data.quotationDate}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 text-gray-500">有效期限：</td>
-                                <td className="py-1 text-gray-800">{data.validUntil}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 text-gray-500">經辦人員：</td>
-                                <td className="py-1 font-bold text-gray-800">{data.salesRep}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            {/* Items Table - 移除了固定行數的程式碼 */}
-            <div className="items-section flex-grow">
-                <table className="items-table w-full text-left border-collapse">
-                    <thead>
-                        <tr className="text-xs uppercase">
-                            <th className="py-2 px-2 w-10 text-center">No.</th>
-                            <th className="py-2 px-2">Description (品項 / 規格)</th>
-                            <th className="py-2 px-2 w-16 text-center">Unit</th>
-                            <th className="py-2 px-2 w-16 text-right">Qty</th>
-                            <th className="py-2 px-2 w-24 text-right">Unit Price</th>
-                            <th className="py-2 px-2 w-24 text-right">Amount</th>
-                            <th className="py-2 px-2 w-24">Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm">
-                        {data.items.map((item, idx) => (
-                            <tr key={item.id}>
-                                <td className="py-2 px-2 text-center text-gray-500">{idx + 1}</td>
-                                <td className="py-2 px-2 whitespace-pre-wrap">{item.description}</td>
-                                <td className="py-2 px-2 text-center">{item.unit}</td>
-                                <td className="py-2 px-2 text-right">{item.quantity}</td>
-                                <td className="py-2 px-2 text-right">{formatNumber(item.unitPrice)}</td>
-                                <td className="py-2 px-2 text-right font-medium">{formatNumber(item.quantity * item.unitPrice)}</td>
-                                <td className="py-2 px-2 text-gray-500 text-xs">{item.remark}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Footer Section */}
-            <div className="footer-section mt-4">
-                <div className="flex justify-end mb-4">
-                    <div className="w-64">
-                        <div className="flex justify-between py-1 text-sm text-gray-600">
-                            <span>合計 (Subtotal):</span>
-                            <span>NT$ {formatNumber(subtotal)}</span>
-                        </div>
-                        <div className="flex justify-between py-1 text-sm text-gray-600 border-b border-gray-300">
-                            <span>稅額 (Tax 5%):</span>
-                            <span>NT$ {formatNumber(tax)}</span>
-                        </div>
-                        <div className="flex justify-between py-2 text-lg font-bold text-gray-900">
-                            <span>總計 (Total):</span>
-                            <span>NT$ {formatNumber(total)}</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 備註與條款 */}
-                <div className="terms-box border border-gray-300 p-3 rounded-sm text-xs bg-gray-50">
-                    <div className="grid grid-cols-1 gap-2">
-                        <div className="flex">
-                            <div className="font-bold text-gray-700 w-20 flex-shrink-0">付款條件：</div>
-                            <div className="text-gray-600 whitespace-pre-wrap flex-1">{data.paymentTerms}</div>
-                        </div>
-                        <div className="flex">
-                            <div className="font-bold text-gray-700 w-20 flex-shrink-0">其他備註：</div>
-                            <div className="text-gray-600 whitespace-pre-wrap flex-1">{data.customRemarks}</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 簽名欄 */}
-                <div className="mt-8 flex justify-between items-end px-4 pb-2">
-                    <div className="text-center w-1/3">
-                        <div className="border-b border-gray-400 mb-2 h-16"></div>
-                        <div className="text-xs text-gray-500">客戶簽核 (Customer Signature)</div>
-                    </div>
-                    <div className="text-center w-1/3 relative">
-                        <div className="border-b border-gray-400 mb-2 h-16 relative z-10"></div>
-                        <div className="text-xs text-gray-500">公司簽章 (Authorized Signature)</div>
-                    </div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<QuotationSystem />);
-</script>
-</body>
-</html>    flex-direction: column;
-}
-
-/* 表格樣式微調 */
-.items-table th { background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb; color: #374151; font-weight: 700; }
-.items-table td { border-bottom: 1px solid #f3f4f6; }
-</style>
-</head>
-<body class="bg-gray-100 text-gray-700">
-<div id="root"></div>
-
-<script type="text/babel">
-const { useState, useEffect } = React;
-
-// 更新業務人員清單
-const SALES_REPS = [
-    '請選擇',
-    '黃永裕 Eddy',
-    '管翊揚 Yang',
-    '林靜美 Shaders',
-    '吳玥瑨 Yueh',
-    '陳念慈 Nico',
-    '李靜 Lidia'
-];
-
-const QuotationSystem = () => {
-  
-  // 取得初始資料
-  const getInitialData = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const validDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    
-    // 定義固定的備註文字
-    const defaultRemarks = `匯款資訊： 兆豐國際商業銀行(017) 新竹分行 | 帳號：203-09-06002-1 | 戶名：舞雲智網股份有限公司
-有效期限： 本報價單有效期限為 ${validDate}，逾期請重新詢價。`;
-
-    return {
-      customerName: 'ABC股份有限公司',
-      customerTaxId: '12345678',
-      projectName: '碳定價管理流程輔導',
-      salesRep: SALES_REPS[0],
-      quotationDate: today,
-      validUntil: validDate,
-      paymentTerms: '驗收後月結 30 天',
-      customRemarks: defaultRemarks,
-      items: [
-        {
-          id: '1',
-          description: '碳定價管理流程輔導\n(說明)',
-          unit: '人時',
-          quantity: 100,
-          unitPrice: 10000,
-          remark: '顧問服務'
-        }
-      ]
-    };
-  };
-
-  const [data, setData] = useState(getInitialData());
-  const [showPreview, setShowPreview] = useState(false);
-
-  // 重置表單功能
-  const handleReset = () => {
-    if (confirm('確定要開新報價單嗎？目前未儲存的內容將會消失，並回復至預設值。')) {
-      setData(getInitialData());
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handleChange = (field, value) => {
-    setData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleItemChange = (id, field, value) => {
-    const newItems = data.items.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
-    );
-    setData(prev => ({ ...prev, items: newItems }));
-  };
-
-  const addItem = () => {
-    const newItem = {
-      id: Date.now().toString(),
-      description: '',
-      unit: '式',
-      quantity: 1,
-      unitPrice: 0,
-      remark: ''
-    };
-    setData(prev => ({ ...prev, items: [...prev.items, newItem] }));
-  };
-
-  const removeItem = (id) => {
-    setData(prev => ({ ...prev, items: prev.items.filter(item => item.id !== id) }));
-  };
-
-  // 金額計算
-  const subtotal = data.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
-  const tax = Math.round(subtotal * 0.05);
-  const total = subtotal + tax;
-
-  // 數字格式化 (千分位)
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
-  return (
-    <div className="min-h-screen pb-12">
-      {/* --- 頂部導航列 --- */}
-      <div className="no-print bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center">
-              <i className="fas fa-calculator"></i>
-            </div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.3</span></h1>
-          </div>
-          <div className="flex gap-3">
-            <button 
-              onClick={handleReset}
-              className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-bold shadow transition flex items-center gap-2"
-            >
-              <i className="fas fa-file-circle-plus"></i>
-              新開報價單
-            </button>
-            <button 
-              onClick={() => setShowPreview(!showPreview)}
-              className="lg:hidden px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition flex items-center gap-2"
-            >
-              <i className={`fas ${showPreview ? 'fa-edit' : 'fa-eye'}`}></i>
-              {showPreview ? '返回編輯' : '預覽'}
-            </button>
-            <button 
-              onClick={handlePrint}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2"
-            >
-              <i className="fas fa-print"></i>
-              下載 PDF / 列印
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* --- 左側：編輯區 (列印時隱藏) --- */}
-        <div className={`lg:col-span-4 space-y-6 no-print ${showPreview ? 'hidden' : 'block'}`}>
-          {/* 客戶資訊 */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-1 h-5 bg-blue-500 rounded-full"></span>
-              客戶資訊
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">客戶名稱</label>
-                <input type="text" value={data.customerName} onChange={(e) => handleChange('customerName', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">統一編號</label>
-                <input type="text" value={data.customerTaxId} onChange={(e) => handleChange('customerTaxId', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">專案名稱</label>
-                <input type="text" value={data.projectName} onChange={(e) => handleChange('projectName', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase text-blue-600">經辦人員 (業務姓名)</label>
-                <div className="relative">
-                    <select 
-                        value={data.salesRep} 
-                        onChange={(e) => handleChange('salesRep', e.target.value)} 
-                        className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-blue-50 appearance-none cursor-pointer"
-                    >
-                        {SALES_REPS.map(rep => (
-                            <option key={rep} value={rep}>{rep}</option>
-                        ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600">
-                        <i className="fas fa-chevron-down text-xs"></i>
-                    </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">報價日期</label>
-                  <input type="date" value={data.quotationDate} onChange={(e) => handleChange('quotationDate', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">有效期限</label>
-                  <input type="date" value={data.validUntil} onChange={(e) => handleChange('validUntil', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 報價品項編輯 */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-1 h-5 bg-green-500 rounded-full"></span>
-              報價品項
-            </h2>
-            <div className="space-y-4">
-              {data.items.map((item, idx) => (
-                <div key={item.id} className="bg-gray-50 p-3 rounded-lg border border-gray-200 relative group">
-                  <button onClick={() => removeItem(item.id)} className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition" title="刪除此項目"><i className="fas fa-trash-alt text-xs"></i></button>
-                  <div className="space-y-2">
-                    <div>
-                      <label className="text-xs font-bold text-gray-500 uppercase">品項描述 ({idx + 1})</label>
-                      <textarea rows="2" value={item.description} onChange={(e) => handleItemChange(item.id, 'description', e.target.value)} className="w-full mt-1 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase">數量</label>
-                            <input type="number" value={item.quantity} onChange={(e) => handleItemChange(item.id, 'quantity', parseFloat(e.target.value) || 0)} className="w-full mt-1 px-2 py-1 text-sm border border-gray-300 rounded outline-none" />
-                        </div>
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase">單位</label>
-                            <input type="text" value={item.unit} onChange={(e) => handleItemChange(item.id, 'unit', e.target.value)} className="w-full mt-1 px-2 py-1 text-sm border border-gray-300 rounded outline-none" />
-                        </div>
-                        <div>
-                            <label className="text-xs font-bold text-gray-500 uppercase">單價</label>
-                            <input type="number" value={item.unitPrice} onChange={(e) => handleItemChange(item.id, 'unitPrice', parseFloat(e.target.value) || 0)} className="w-full mt-1 px-2 py-1 text-sm border border-gray-300 rounded outline-none" />
-                        </div>
-                    </div>
-                    <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">備註 (列印顯示)</label>
-                        <input type="text" value={item.remark} onChange={(e) => handleItemChange(item.id, 'remark', e.target.value)} className="w-full mt-1 px-2 py-1 text-sm border border-gray-300 rounded outline-none" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <button onClick={addItem} className="w-full py-2 border-2 border-dashed border-gray-300 text-gray-500 hover:border-blue-500 hover:text-blue-500 rounded-lg font-medium transition flex items-center justify-center gap-2">
-                <i className="fas fa-plus"></i> 新增品項
-              </button>
-            </div>
-          </div>
-
-          {/* 條款與備註編輯 */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-            <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-1 h-5 bg-purple-500 rounded-full"></span>
-              條款與備註
-            </h2>
-            <div className="space-y-3">
-                <div>
-                    <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">付款條件</label>
-                    <textarea rows="3" value={data.paymentTerms} onChange={(e) => handleChange('paymentTerms', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
-                </div>
-                <div>
-                    <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">其他備註 (顯示於報價單底部)</label>
-                    <textarea rows="5" value={data.customRemarks} onChange={(e) => handleChange('customRemarks', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
-                </div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- 右側：預覽區 (列印時全螢幕) --- */}
-        <div className={`lg:col-span-8 print-area ${!showPreview ? 'hidden lg:block' : 'block'}`}>
-          <div className="a4-paper">
-            {/* Header */}
-            <div className="header-section mb-6 border-b-2 border-gray-800 pb-4">
-                <div className="flex justify-between items-end">
-                    <div>
-                        <h1 className="text-3xl font-black text-gray-900 tracking-wide">報 價 單</h1>
-                        <p className="text-sm text-gray-500 mt-1 font-medium tracking-widest">QUOTATION</p>
-                    </div>
-                    <div className="text-right">
+                    <div className="w-64 text-right flex-shrink-0">
                         <div className="text-xl font-bold text-gray-800">舞雲智網股份有限公司</div>
                         <div className="text-xs text-gray-500 mt-1">統一編號：53789408</div>
                         <div className="text-xs text-gray-500">新竹縣竹北市復興三路二段76號</div>
