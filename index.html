@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>舞雲智網 - 智能報價單系統 v8.8</title>
+<title>舞雲智網 - 智能報價單系統 v8.9</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -18,17 +18,18 @@ body { font-family: 'Noto Sans TC', sans-serif; }
     @page { size: A4; margin: 0; }
     body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .no-print { display: none !important; }
-    .print-area { display: block !important; width: 210mm; margin: 0 auto; position: relative; }
-    /* 強制分頁與固定高度 */
+    .print-area { display: block !important; width: 210mm; margin: 0 auto; }
+    /* 強制分頁設定 */
     .a4-paper { 
         width: 100% !important; 
-        height: 296mm !important; /* 強制 A4 高度 */
+        height: 297mm !important; /* 強制 A4 高度 */
         padding: 10mm 15mm !important; 
         box-shadow: none !important; 
         margin: 0 !important; 
         display: flex !important; 
         flex-direction: column !important; 
-        page-break-after: always; /* 每張紙印完自動換下一頁 */
+        page-break-after: always; /* 印完這張強制換頁 */
+        overflow: hidden; /* 防止內容溢出撐破紙張 */
     }
     .a4-paper:last-child { page-break-after: auto; }
     ::-webkit-scrollbar { display: none; }
@@ -37,17 +38,17 @@ body { font-family: 'Noto Sans TC', sans-serif; }
 /* 螢幕顯示用的 A4 模擬 */
 .a4-paper {
     width: 210mm;
-    min-height: 297mm;
+    height: 297mm; /* 螢幕上也強制固定高度，模擬真實 A4 */
     background: white;
-    margin: 0 auto 20px auto; /* 兩頁之間留白 */
+    margin: 0 auto 20px auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     padding: 12mm 15mm;
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-/* 表格樣式微調 */
 .items-table th { background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb; color: #374151; font-weight: 700; }
 .items-table td { border-bottom: 1px solid #f3f4f6; }
 </style>
@@ -144,6 +145,28 @@ const QuotationSystem = () => {
   const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const handlePrint = () => window.print();
 
+  // 共用的頁首元件 (第一頁和第二頁都會用到)
+  const HeaderSection = ({ pageNum }) => (
+    <div className="header-section mb-6 border-b-2 border-gray-800 pb-4">
+        <div className="flex justify-between items-end">
+            <div>
+                <h1 className="text-4xl font-black text-gray-900 tracking-wide">報 價 單</h1>
+                <p className="text-base text-gray-500 mt-1 font-medium tracking-widest">QUOTATION</p>
+                <p className="text-xs text-gray-400 mt-1">Page {pageNum} of 2</p>
+            </div>
+            <div className="flex items-center gap-4">
+                <img src="./LOGO.gif" alt="Company Logo" className="h-16 w-auto" />
+                <div className="text-right">
+                    <div className="text-xl font-bold text-gray-800">舞雲智網股份有限公司</div>
+                    <div className="text-xs text-gray-500 mt-1">統一編號：53789408</div>
+                    <div className="text-xs text-gray-500">新竹縣竹北市復興三路二段76號</div>
+                    <div className="text-xs text-gray-500">Tel: (03)658-9760</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen pb-12">
       {/* 頂部導航列 */}
@@ -151,7 +174,7 @@ const QuotationSystem = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center"><i className="fas fa-calculator"></i></div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.8</span></h1>
+            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.9</span></h1>
           </div>
           <div className="flex gap-3">
             <button onClick={handleReset} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-bold shadow transition flex items-center gap-2">
@@ -225,24 +248,7 @@ const QuotationSystem = () => {
           
           {/* ============== 第一頁：明細與總計 ============== */}
           <div className="a4-paper">
-            {/* Header */}
-            <div className="header-section mb-6 border-b-2 border-gray-800 pb-4">
-                <div className="flex justify-between items-end">
-                    <div>
-                        <h1 className="text-4xl font-black text-gray-900 tracking-wide">報 價 單</h1>
-                        <p className="text-base text-gray-500 mt-1 font-medium tracking-widest">QUOTATION</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <img src="./LOGO.gif" alt="Company Logo" className="h-20 w-auto" />
-                        <div className="text-right">
-                            <div className="text-2xl font-bold text-gray-800">舞雲智網股份有限公司</div>
-                            <div className="text-sm text-gray-500 mt-1">統一編號：53789408</div>
-                            <div className="text-sm text-gray-500">新竹縣竹北市復興三路二段76號</div>
-                            <div className="text-sm text-gray-500">Tel: (03)658-9760</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HeaderSection pageNum={1} />
 
             {/* Info Section */}
             <div className="info-section mb-6 grid grid-cols-2 gap-8">
@@ -313,6 +319,8 @@ const QuotationSystem = () => {
 
           {/* ============== 第二頁：條款與簽章 ============== */}
           <div className="a4-paper">
+            <HeaderSection pageNum={2} />
+            
             {/* 備註與條款 (灰框) */}
             <div className="terms-box border border-gray-300 p-5 rounded-sm text-base bg-gray-50">
                 <div className="grid grid-cols-1 gap-4">
@@ -328,13 +336,13 @@ const QuotationSystem = () => {
             </div>
 
             {/* 簽名欄 - 包含舞雲專用浮水印 */}
-            <div className="mt-24 flex justify-between items-end px-12 pb-12">
+            <div className="mt-auto flex justify-between items-end px-12 pb-24">
                 <div className="text-center w-5/12">
                     <div className="border-b border-gray-400 mb-2 h-16"></div>
                     <div className="text-base text-gray-500">客戶簽核 (Customer Signature)</div>
                 </div>
                 <div className="text-center w-5/12 relative">
-                    {/* 舞雲專用紅色浮水印印章 */}
+                    {/* 舞雲專用紅色浮水印印章 (使用 CSS 繪製) */}
                     <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 rotate-[-5deg] border-[3px] border-red-200 rounded-full w-28 h-28 flex items-center justify-center z-0 opacity-80 pointer-events-none">
                         <div className="text-red-200 font-serif text-2xl font-bold leading-tight tracking-[0.2em] text-center">
                             舞雲<br/>專用
