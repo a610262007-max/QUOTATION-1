@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>舞雲智網 - 智能報價單系統 v8.13</title>
+<title>舞雲智網 - 智能報價單系統 v8.14</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -146,7 +146,7 @@ const QuotationSystem = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center"><i className="fas fa-calculator"></i></div>
-            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.13</span></h1>
+            <h1 className="text-xl font-bold text-gray-800">智能報價單系統 <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">v8.14</span></h1>
           </div>
           <div className="flex gap-3">
             <button onClick={handleReset} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-bold shadow transition flex items-center gap-2">
@@ -222,45 +222,45 @@ const QuotationSystem = () => {
           <div className="a4-paper">
             <HeaderSection pageNum={1} />
 
-            {/* 新版排版：左右對齊的表頭資訊 */}
-            <div className="mb-8 border-b-2 border-gray-800 pb-6 flex justify-between text-[15px] leading-loose tracking-wide">
+            {/* 新版排版：取消內縮，完全貼齊邊界 */}
+            <div className="mb-8 border-b-2 border-gray-800 pb-6 flex justify-between w-full text-[15px] leading-loose tracking-wide">
                 {/* 左側資訊區 */}
-                <div className="space-y-1 w-[45%]">
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>客戶名稱</span>
+                <div className="space-y-1">
+                    <div className="flex items-center">
+                        <span className="text-gray-700">客戶名稱</span>
                         <span className="mx-1">：</span>
                         <span className="font-bold text-gray-900">{data.customerName}</span>
                     </div>
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>專案名稱</span>
+                    <div className="flex items-center">
+                        <span className="text-gray-700">專案名稱</span>
                         <span className="mx-1">：</span>
                         <span className="text-gray-900">{data.projectName}</span>
                     </div>
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>統一編號</span>
+                    <div className="flex items-center">
+                        <span className="text-gray-700">統一編號</span>
                         <span className="mx-1">：</span>
                         <span className="text-gray-900">{data.customerTaxId}</span>
                     </div>
                 </div>
                 {/* 右側資訊區 */}
-                <div className="space-y-1 w-[45%]">
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>報價單號</span>
+                <div className="space-y-1">
+                    <div className="flex items-center">
+                        <span className="text-gray-700">報價單號</span>
                         <span className="mx-1">：</span>
                         <span className="text-gray-900">Q-{data.quotationDate.replace(/-/g, '')}-01</span>
                     </div>
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>日　　期</span>
+                    <div className="flex items-center">
+                        <span className="text-gray-700">日　　期</span>
                         <span className="mx-1">：</span>
                         <span className="text-gray-900">{data.quotationDate}</span>
                     </div>
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>有效期限</span>
+                    <div className="flex items-center">
+                        <span className="text-gray-700">有效期限</span>
                         <span className="mx-1">：</span>
                         <span className="text-gray-900">{data.validUntil}</span>
                     </div>
-                    <div className="flex">
-                        <span className="text-gray-700 w-24 text-justify" style={{textAlignLast: 'justify'}}>經辦人員</span>
+                    <div className="flex items-center">
+                        <span className="text-gray-700">經辦人員</span>
                         <span className="mx-1">：</span>
                         <span className="font-bold text-gray-900">{data.salesRep}</span>
                     </div>
